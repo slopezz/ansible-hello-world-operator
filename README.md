@@ -65,3 +65,14 @@ all                            Create all: OCP project, CRD, Operator, CR
 clean                          Clean all resources: CR, Operator, CRD, OCP project
 help                           Print this help
 ```
+
+[operator-sdk]:https://github.com/operator-framework/operator-sdk
+[docker_tool]:https://docs.docker.com/install/
+[ansible_tool]:https://docs.ansible.com/ansible/latest/index.html
+[ansible_runner_tool]:https://ansible-runner.readthedocs.io/en/latest/install.html
+[ansible_runner_http_plugin]:https://github.com/ansible/ansible-runner-http
+[dep_tool]:https://golang.github.io/dep/docs/installation.html
+[go_tool]:https://golang.org/
+[kubernetes]:https://kubernetes.io/
+[kubectl_tool]:https://kubernetes.io/docs/tasks/tools/install-kubectl/
+[oc_tool]:https://docs.okd.io/3.11/cli_reference/get_started_cli.html#cli-reference-get-started-cli
