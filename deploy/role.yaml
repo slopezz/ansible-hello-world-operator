@@ -13,8 +13,6 @@ rules:
   - events
   - configmaps
   - secrets
-  - serviceaccounts
-  - bindings/finalizers
   verbs:
   - '*'
 - apiGroups:
@@ -61,13 +59,15 @@ rules:
   - get
   - create
 - apiGroups:
-  - hello-world-operator.com
+  - apps
+  resourceNames:
+  - hello-world-operator
   resources:
-  - '*'
+  - deployments/finalizers
   verbs:
-  - '*'
+  - update
 - apiGroups:
-  - "*"
+  - hello-world-operator.com
   resources:
   - '*'
   verbs:

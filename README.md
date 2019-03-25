@@ -6,7 +6,7 @@ Ansible hello-world-operator for Openshift.
 
 You need to go to official [DOC](https://github.com/operator-framework/operator-sdk/blob/master/doc/ansible/user-guide.md), in order to setup minimal `operator-sdk` prerequisites:
 
-- [operator-sdk] version v0.5.0.
+- [operator-sdk] version v0.6.0.
 - [docker][docker_tool] version 17.03+.
 - [kubernetes] version v1.11.0+
 - [kubectl][kubectl_tool] version v1.9.0+.

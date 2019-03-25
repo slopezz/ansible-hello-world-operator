@@ -14,10 +14,28 @@ spec:
     spec:
       serviceAccountName: hello-world-operator
       containers:
-        - name: hello-world-operator
+        - name: ansible
+          command:
+          - /usr/local/bin/ao-logs
+          - /tmp/ansible-operator/runner
+          - stdout
           # Replace this with the built image name
-          image: "slopezz/hello-world-operator:v0.0.19"
+          image: "slopezz/hello-world-operator:v0.0.20"
           imagePullPolicy: "Always"
+          volumeMounts:
+          - mountPath: /tmp/ansible-operator/runner
+            name: runner
+            readOnly: true
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        - name: operator
+          # Replace this with the built image name
+          image: "slopezz/hello-world-operator:v0.0.20"
+          imagePullPolicy: "Always"
+          volumeMounts:
+          - mountPath: /tmp/ansible-operator/runner
+            name: runner
           env:
             - name: WATCH_NAMESPACE
               valueFrom:
@@ -34,3 +52,6 @@ spec:
           resources: {}
           terminationMessagePath: /dev/termination-log
           terminationMessagePolicy: File
+      volumes:
+        - name: runner
+          emptyDir: {}

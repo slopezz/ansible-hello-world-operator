@@ -1,4 +1,4 @@
-.PHONY: login docker-build docker-push docker-update create-project switch-project delete-project create-crd delete-crd create-operator delete-operator update-operator create-cr update-cr delete-cr all clean help
+.PHONY: docker-build docker-push docker-update create-project switch-project delete-project create-crd delete-crd create-operator delete-operator update-operator create-cr update-cr delete-cr all clean help
 
 .DEFAULT_GOAL := help
 
@@ -6,9 +6,8 @@ MKFILE_PATH := $(abspath $(lastword $(MAKEFILE_LIST)))
 THISDIR_PATH := $(patsubst %/,%,$(abspath $(dir $(MKFILE_PATH))))
 
 IMAGE ?= slopezz/hello-world-operator
-VERSION ?= v0.0.19
+VERSION ?= v0.0.20
 NAMESPACE ?= example-hello-world
-
 
 docker-build: ## Build operator Docker image
 	operator-sdk build $(IMAGE):$(VERSION)
