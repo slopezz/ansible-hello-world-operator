@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-world-operator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: hello-world-operator
+  template:
+    metadata:
+      labels:
+        name: hello-world-operator
+    spec:
+      serviceAccountName: hello-world-operator
+      containers:
+        - name: hello-world-operator
+          # Replace this with the built image name
+          image: "slopezz/hello-world-operator:v0.0.19"
+          imagePullPolicy: "Always"
+          env:
+            - name: WATCH_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: metadata.namespace
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: metadata.name
+            - name: OPERATOR_NAME
+              value: "hello-world-operator"
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File

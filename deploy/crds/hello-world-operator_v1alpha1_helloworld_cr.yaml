@@ -1,0 +1,15 @@
+apiVersion: hello-world-operator.com/v1alpha1
+kind: HelloWorld
+metadata:
+  name: example-helloworld
+spec:
+  helloWorldNameSpaceName: "hello-world"
+  helloWorldIsImageLatestTag: "2.0"
+  helloWorldIsImageTag: "2.0"
+  helloWorldIsImageName: "gcr.io/google-samples/hello-app:2.0"
+  helloWorldDcReplicas: 1
+  helloWorldDcResourcesRequestsCpu: "50m"
+  helloWorldDcResourcesRequestsMemory: "64Mi"
+  helloWorldDcResourcesLimitsCpu: "100m"
+  helloWorldDcResourcesLimitsMemory: "128Mi"
+  helloWorldRouteHosts: "hello-world-example.apps.ocp-40.net"

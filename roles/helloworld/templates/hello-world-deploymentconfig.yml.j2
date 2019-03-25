@@ -1,0 +1,52 @@
+apiVersion: v1
+kind: DeploymentConfig
+metadata:
+  name: "{{ meta.name }}-hello-world"
+  namespace: "{{ meta.namespace }}"
+spec:
+  template:
+    metadata:
+      labels:
+        name: "{{ meta.name }}-hello-world"
+    spec:
+      containers:
+        - name: hello-world
+          image: "{{ hello_world_dc_image }}"
+          imagePullPolicy: IfNotPresent
+          ports:
+          - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 20
+            periodSeconds: 20
+            timeoutSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 20
+            periodSeconds: 10
+            timeoutSeconds: 5
+          resources:
+            requests:
+              cpu: "{{ hello_world_dc_resources_requests_cpu }}"
+              memory: "{{ hello_world_dc_resources_requests_memory }}"
+            limits:
+              cpu: "{{ hello_world_dc_resources_limits_cpu }}"
+              memory: "{{ hello_world_dc_resources_limits_memory }}"
+  triggers:
+    - type: ConfigChange
+    - type: ImageChange
+      imageChangeParams:
+        automatic: true
+        containerNames:
+          - hello-world
+        from:
+          kind: ImageStreamTag
+          name: "{{ meta.name }}-hello-world:latest"
+        lastTriggeredImage: "{{ hello_world_dc_image }}"
+  replicas: "{{ hello_world_dc_replicas }}"
+  selector:
+    name: "{{ meta.name }}-hello-world"

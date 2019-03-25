@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Route
+metadata:
+  name: "{{ meta.name }}-hello-world"
+  namespace: "{{ meta.namespace }}"
+spec:
+  host: "{{ hello_world_route_hosts }}"
+  to:
+    kind: Service
+    name: "{{ meta.name }}-hello-world"
