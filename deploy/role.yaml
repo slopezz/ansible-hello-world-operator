@@ -72,3 +72,10 @@ rules:
   - '*'
   verbs:
   - '*'
+# Needed 3 x "*" only on OCP 3.11 (if not HTTP 403), on OCP 4.0 is not needed
+- apiGroups:
+  - '*'
+  resources:
+  - '*'
+  verbs:
+  - '*'

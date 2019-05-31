@@ -21,7 +21,7 @@ You need to go to official [DOC](https://github.com/operator-framework/operator-
 
 ## CR example
 
-In order to create a specific Custom Resource of HelloWorld kind (you can create multiple on same Namespace), you just need to create an specific CR:
+In order to create a specific Custom Resource of HelloWorld kind (you can create multiple on same Namespace), you just need to create an specific CR, for example:
  
 ```bash
 apiVersion: hello-world-operator.com/v1alpha1
@@ -29,7 +29,6 @@ kind: HelloWorld
 metadata:
   name: example-helloworld
 spec:
-  helloWorldNameSpaceName: "hello-world"
   helloWorldIsImageLatestTag: "2.0"
   helloWorldIsImageTag: "2.0"
   helloWorldIsImageName: "gcr.io/google-samples/hello-app:2.0"
@@ -56,7 +55,7 @@ delete-project                 Delete OCP project for the operator
 create-crd                     Create Operator CRD
 delete-crd                     Delete Operator CRD
 create-operator                Create Operator objects (remember to set correct image on deploy/operator.yaml)
-update-operator                Update Operator main object
+update-operator                Update Operator main object (Deployment)
 delete-operator                Delete Operator objects
 create-cr                      Create specific CR
 update-cr                      Update specific CR
@@ -64,6 +63,18 @@ delete-cr                      Delete specific CR
 all                            Create all: OCP project, CRD, Operator, CR
 clean                          Clean all resources: CR, Operator, CRD, OCP project
 help                           Print this help
+```
+
+* Execute `all` target that will create all needed objects (you can overwrite target namespace with `NAMESPACE` var):
+
+```bash
+make all
+```
+
+* Once tested, execute `clean` target that will delete all created objects (you can overwrite target namespace with `NAMESPACE` var):
+
+```bash
+make clean
 ```
 
 [operator-sdk]:https://github.com/operator-framework/operator-sdk

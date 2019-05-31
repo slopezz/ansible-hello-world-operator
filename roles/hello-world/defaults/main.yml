@@ -12,4 +12,4 @@ hello_world_dc_resources_requests_memory: "32Mi"
 hello_world_dc_resources_limits_cpu: "100m"
 hello_world_dc_resources_limits_memory: "64Mi"
 # Routes
-hello_world_route_hosts: "hello-world.example.net"
+hello_world_route_hosts: "hello-world.3scale.net"

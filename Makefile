@@ -5,9 +5,9 @@
 MKFILE_PATH := $(abspath $(lastword $(MAKEFILE_LIST)))
 THISDIR_PATH := $(patsubst %/,%,$(abspath $(dir $(MKFILE_PATH))))
 
-IMAGE ?= slopezz/hello-world-operator
-VERSION ?= v0.0.20
-NAMESPACE ?= example-hello-world
+IMAGE ?= slopezz/ansible-hello-world-operator
+VERSION ?= v1.0.0
+NAMESPACE ?= example
 
 docker-build: ## Build operator Docker image
 	operator-sdk build $(IMAGE):$(VERSION)
@@ -28,10 +28,10 @@ delete-project: ## Delete OCP project for the operator
 	oc delete --force project $(NAMESPACE) || true
 
 create-crd: switch-project ## Create Operator CRD
-	oc create -f deploy/crds/hello-world-operator_v1alpha1_helloworld_crd.yaml
+	oc create -f deploy/crds/crd.yaml
 
 delete-crd: switch-project ## Delete Operator CRD
-	oc delete -f deploy/crds/hello-world-operator_v1alpha1_helloworld_crd.yaml
+	oc delete -f deploy/crds/crd.yaml
 
 create-operator: switch-project ## Create Operator objects (remember to set correct image on deploy/operator.yaml)
 	oc create -f deploy/service_account.yaml
@@ -39,7 +39,7 @@ create-operator: switch-project ## Create Operator objects (remember to set corr
 	oc create -f deploy/role_binding.yaml
 	oc create -f deploy/operator.yaml
 
-update-operator: switch-project ## Update Operator main object
+update-operator: switch-project ## Update Operator main object (Deployment)
 	oc apply -f deploy/operator.yaml
 
 delete-operator: switch-project ## Delete Operator objects
@@ -49,13 +49,13 @@ delete-operator: switch-project ## Delete Operator objects
 	oc delete -f deploy/service_account.yaml
 
 create-cr: switch-project ## Create specific CR
-	oc create -f deploy/crds/hello-world-operator_v1alpha1_helloworld_cr.yaml
+	oc create -f deploy/crds/cr.yaml
 
 update-cr: switch-project ## Update specific CR
-	oc apply -f deploy/crds/hello-world-operator_v1alpha1_helloworld_cr.yaml
+	oc apply -f deploy/crds/cr.yaml
 
 delete-cr: switch-project ## Delete specific CR
-	oc delete -f deploy/crds/hello-world-operator_v1alpha1_helloworld_cr.yaml
+	oc delete -f deploy/crds/cr.yaml
 
 all: create-project create-crd create-operator create-cr ## Create all: OCP project, CRD, Operator, CR
 

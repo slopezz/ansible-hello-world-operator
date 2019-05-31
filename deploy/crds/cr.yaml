@@ -3,7 +3,6 @@ kind: HelloWorld
 metadata:
   name: example-helloworld
 spec:
-  helloWorldNameSpaceName: "hello-world"
   helloWorldIsImageLatestTag: "2.0"
   helloWorldIsImageTag: "2.0"
   helloWorldIsImageName: "gcr.io/google-samples/hello-app:2.0"

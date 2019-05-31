@@ -4,6 +4,9 @@ metadata:
   name: "{{ meta.name }}-hello-world"
   namespace: "{{ meta.namespace }}"
 spec:
+  replicas: {{ hello_world_dc_replicas }}
+  selector:
+    name: "{{ meta.name }}-hello-world"
   template:
     metadata:
       labels:
@@ -15,20 +18,27 @@ spec:
           imagePullPolicy: IfNotPresent
           ports:
           - containerPort: 8080
+            protocol: TCP
           readinessProbe:
             httpGet:
               path: /
               port: 8080
+              scheme: HTTP
             initialDelaySeconds: 20
             periodSeconds: 20
             timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 3
           livenessProbe:
             httpGet:
               path: /
               port: 8080
+              scheme: HTTP
             initialDelaySeconds: 20
             periodSeconds: 10
             timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 3
           resources:
             requests:
               cpu: "{{ hello_world_dc_resources_requests_cpu }}"
@@ -36,6 +46,8 @@ spec:
             limits:
               cpu: "{{ hello_world_dc_resources_limits_cpu }}"
               memory: "{{ hello_world_dc_resources_limits_memory }}"
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
   triggers:
     - type: ConfigChange
     - type: ImageChange
@@ -46,7 +58,5 @@ spec:
         from:
           kind: ImageStreamTag
           name: "{{ meta.name }}-hello-world:latest"
+          namespace: "{{ meta.namespace }}"
         lastTriggeredImage: "{{ hello_world_dc_image }}"
-  replicas: "{{ hello_world_dc_replicas }}"
-  selector:
-    name: "{{ meta.name }}-hello-world"

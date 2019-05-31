@@ -19,8 +19,7 @@ spec:
           - /usr/local/bin/ao-logs
           - /tmp/ansible-operator/runner
           - stdout
-          # Replace this with the built image name
-          image: "slopezz/hello-world-operator:v0.0.20"
+          image: "slopezz/ansible-hello-world-operator:v1.0.0"
           imagePullPolicy: "Always"
           volumeMounts:
           - mountPath: /tmp/ansible-operator/runner
@@ -30,8 +29,7 @@ spec:
           terminationMessagePath: /dev/termination-log
           terminationMessagePolicy: File
         - name: operator
-          # Replace this with the built image name
-          image: "slopezz/hello-world-operator:v0.0.20"
+          image: "slopezz/ansible-hello-world-operator:v1.0.0"
           imagePullPolicy: "Always"
           volumeMounts:
           - mountPath: /tmp/ansible-operator/runner

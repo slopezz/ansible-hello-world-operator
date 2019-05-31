@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: ImageStream
+metadata:
+  name: "{{ meta.name }}-hello-world"
+  namespace: "{{ meta.namespace }}"
+spec:
+  tags:
+    - name: "{{ hello_world_is_image_tag }}"
+      annotations:
+        openshift.io/display-name: hello-world {{ hello_world_is_image_tag }}
+      from:
+        kind: DockerImage
+        name: "{{ hello_world_is_image_name }}"
+      referencePolicy:
+        type: Source
+      importPolicy: {}
+    - name: latest
+      annotations:
+        openshift.io/display-name: hello-world latest
+      from:
+        kind: ImageStreamTag
+        name: "{{ hello_world_is_image_latest_tag }}"
+      referencePolicy:
+        type: Source
+      importPolicy: {}

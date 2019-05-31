@@ -1,10 +1,10 @@
 ---
 
-- name: Manage hello-world ImageStream
+- name: Manage hello-world ImageStream for CR {{ meta.name }} on project {{ meta.namespace }}
   k8s:
     definition: "{{ lookup('template', 'hello-world-imagestream.yml.j2') }}"
 
-- name: Get details of deployed hello-world DeploymentConfig if exists
+- name: Get details of deployed hello-world DeploymentConfig if exists for CR {{ meta.name }} on project {{ meta.namespace }}
   k8s_facts:
     api_version: v1
     kind: DeploymentConfig
@@ -12,19 +12,19 @@
     name: "{{ meta.name }}-hello-world"
   register: hello_world_dc_register
 
-- name: Set real ImageStream image with internal registry hash of hello-world DeploymentConfig if exists
+- name: Set real ImageStream image with internal registry hash of hello-world DeploymentConfig if exists for CR {{ meta.name }} on project {{ meta.namespace }}
   set_fact:
     hello_world_dc_image: "{{ hello_world_dc_register.resources[0].spec.template.spec.containers[0].image }}"
   when: hello_world_dc_register.resources[0] is defined
 
-- name: Manage hello-world DeploymentConfig
+- name: Manage hello-world DeploymentConfig for CR {{ meta.name }} on project {{ meta.namespace }}
   k8s:
     definition: "{{ lookup('template', 'hello-world-deploymentconfig.yml.j2') }}"
 
-- name: Manage hello-world Service
+- name: Manage hello-world Service for CR {{ meta.name }} on project {{ meta.namespace }}
   k8s:
     definition: "{{ lookup('template', 'hello-world-service.yml.j2') }}"
 
-- name: Manage hello-world Route
+- name: Manage hello-world Route for CR {{ meta.name }} on project {{ meta.namespace }}
   k8s:
     definition: "{{ lookup('template', 'hello-world-route.yml.j2') }}"
