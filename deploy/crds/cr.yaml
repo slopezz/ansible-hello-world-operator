@@ -1,7 +1,7 @@
 apiVersion: hello-world-operator.com/v1alpha1
 kind: HelloWorld
 metadata:
-  name: example-helloworld
+  name: example
 spec:
   helloWorldIsImageLatestTag: "2.0"
   helloWorldIsImageTag: "2.0"
@@ -11,4 +11,4 @@ spec:
   helloWorldDcResourcesRequestsMemory: "64Mi"
   helloWorldDcResourcesLimitsCpu: "100m"
   helloWorldDcResourcesLimitsMemory: "128Mi"
-  helloWorldRouteHosts: "hello-world-example.apps.ocp-40.net"
+  helloWorldRouteHosts: "hello-world-example.ocp-cluster.net"

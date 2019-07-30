@@ -19,7 +19,7 @@ spec:
           - /usr/local/bin/ao-logs
           - /tmp/ansible-operator/runner
           - stdout
-          image: "slopezz/ansible-hello-world-operator:v1.0.0"
+          image: "slopezz/ansible-hello-world-operator:v1.1.0"
           imagePullPolicy: "Always"
           volumeMounts:
           - mountPath: /tmp/ansible-operator/runner
@@ -29,8 +29,12 @@ spec:
           terminationMessagePath: /dev/termination-log
           terminationMessagePolicy: File
         - name: operator
-          image: "slopezz/ansible-hello-world-operator:v1.0.0"
+          image: "slopezz/ansible-hello-world-operator:v1.1.0"
           imagePullPolicy: "Always"
+          ports:
+          - containerPort: 8383
+            name: metrics
+            protocol: TCP
           volumeMounts:
           - mountPath: /tmp/ansible-operator/runner
             name: runner

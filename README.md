@@ -1,12 +1,22 @@
 # Ansible hello-world-operator
 
-Ansible hello-world-operator for Openshift.
+Ansible operator to setup hello-world-operator on Openshift.
+
+Needed objects to create:
+* CRD (one per OCP Cluster)
+* role (one per Namespace)
+* role_binding (one per Namespace)
+* service_account (one per Namespace)
+* Operator Deployment (one per Namespace)
+* Operator headless Service (one per Namespace)
+* Operator ServiceMonitor (one per Namespace)
+* CRs (N per Namespace)
 
 ## Operator SDK setup
 
 You need to go to official [DOC](https://github.com/operator-framework/operator-sdk/blob/master/doc/ansible/user-guide.md), in order to setup minimal `operator-sdk` prerequisites:
 
-- [operator-sdk] version v0.6.0.
+- [operator-sdk] version v0.8.1.
 - [docker][docker_tool] version 17.03+.
 - [kubernetes] version v1.11.0+
 - [kubectl][kubectl_tool] version v1.9.0+.
@@ -21,13 +31,13 @@ You need to go to official [DOC](https://github.com/operator-framework/operator-
 
 ## CR example
 
-In order to create a specific Custom Resource of HelloWorld kind (you can create multiple on same Namespace), you just need to create an specific CR, for example:
+* In order to create a specific Custom Resource of HelloWorld kind (you can create multiple on same Namespace), you just need to create an specific CR, for example:
  
 ```bash
 apiVersion: hello-world-operator.com/v1alpha1
 kind: HelloWorld
 metadata:
-  name: example-helloworld
+  name: example
 spec:
   helloWorldIsImageLatestTag: "2.0"
   helloWorldIsImageTag: "2.0"
@@ -37,10 +47,10 @@ spec:
   helloWorldDcResourcesRequestsMemory: "64Mi"
   helloWorldDcResourcesLimitsCpu: "100m"
   helloWorldDcResourcesLimitsMemory: "128Mi"
-  helloWorldRouteHosts: "hello-world-example.apps.ocp-40.net"
+  helloWorldRouteHosts: "hello-world-example.ocp-cluster.net"
 ```
 
-Each HelloWorld CR will contain `name` string on created Openshift objects (to differenciate among different possible HelloWorld CRs inside same namespace).
+* Each HelloWorld CR will contain `name` string on created Openshift objects (to differenciate among different possible HelloWorld CRs inside same namespace).
  
 ## Usage
 
@@ -54,15 +64,38 @@ switch-project                 Swith to OCP project for the operator
 delete-project                 Delete OCP project for the operator
 create-crd                     Create Operator CRD
 delete-crd                     Delete Operator CRD
-create-operator                Create Operator objects (remember to set correct image on deploy/operator.yaml)
-update-operator                Update Operator main object (Deployment)
+create-operator                Create/Update Operator objects (remember to set correct image on deploy/operator.yaml)
 delete-operator                Delete Operator objects
-create-cr                      Create specific CR
-update-cr                      Update specific CR
+create-cr                      Create/Update specific CR
 delete-cr                      Delete specific CR
-all                            Create all: OCP project, CRD, Operator, CR
-clean                          Clean all resources: CR, Operator, CRD, OCP project
+all                            Create all: OCP-project, CRD, Operator, CR
+clean                          Clean all resources: CR, Operator, CRD, OCP-project
 help                           Print this help
+```
+
+## Operator image creation
+
+* Once you have added changes to ansible operator, create new image and push it to registry with:
+
+```bash
+$ make docker-update
+```
+
+## End-to-end test
+
+
+* Make sure you have installed `oc` client on your machine, and you are authenticated within a OCP Cluster:
+
+```bash
+$ oc login -u admin https://master.ocp-cluster.net:8443
+```
+
+* Only on cases where operator or application image may be located on private Docker Registries, you will need to create a Secret with registry credentials, and link that secret with default/builder service_accounts:
+
+```bash
+$ oc create secret docker-registry private-quay-auth --docker-server=quay.io --docker-username=user+openshift --docker-password=XXX --docker-email=.
+$ oc secrets add serviceaccount/default secrets/private-quay-auth --for=pull
+$ oc secrets add serviceaccount/builder secrets/private-quay-auth
 ```
 
 * Execute `all` target that will create all needed objects (you can overwrite target namespace with `NAMESPACE` var):
