@@ -52,12 +52,17 @@ rules:
   verbs:
   - '*'
 - apiGroups:
+  - build.openshift.io
+  resources:
+  - buildconfigs
+  verbs:
+  - '*'
+- apiGroups:
   - monitoring.coreos.com
   resources:
   - servicemonitors
   verbs:
-  - get
-  - create
+  - '*'
 - apiGroups:
   - apps
   resourceNames:
@@ -68,13 +73,6 @@ rules:
   - update
 - apiGroups:
   - hello-world-operator.com
-  resources:
-  - '*'
-  verbs:
-  - '*'
-# Needed 3 x "*" only on OCP 3.11 (if not HTTP 403), on OCP 4.0 is not needed
-- apiGroups:
-  - '*'
   resources:
   - '*'
   verbs:

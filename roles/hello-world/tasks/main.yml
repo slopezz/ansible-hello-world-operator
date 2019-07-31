@@ -6,7 +6,7 @@
 
 - name: Get details of deployed hello-world DeploymentConfig if exists for CR {{ meta.name }} on project {{ meta.namespace }}
   k8s_facts:
-    api_version: v1
+    api_version: apps.openshift.io/v1
     kind: DeploymentConfig
     namespace: "{{ meta.namespace }}"
     name: "{{ meta.name }}-hello-world"
